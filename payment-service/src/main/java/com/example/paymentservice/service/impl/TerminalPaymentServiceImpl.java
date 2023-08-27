@@ -33,12 +33,12 @@ public class TerminalPaymentServiceImpl implements TerminalPaymentService {
 
         PaymentIntent paymentIntent = paymentIntentService.createPaymentIntent(paymentIntentRequest);
 
+        System.out.println(paymentIntent.getId());
         Reader resource = null;
         try {
             resource = Reader.retrieve(paymentProcessRequest.getTerminalId());
             ReaderProcessPaymentIntentParams params =
                     ReaderProcessPaymentIntentParams.builder().setPaymentIntent(paymentIntent.getId()).build();
-
             Reader reader = resource.processPaymentIntent(params);
             return reader;
         } catch (StripeException e) {

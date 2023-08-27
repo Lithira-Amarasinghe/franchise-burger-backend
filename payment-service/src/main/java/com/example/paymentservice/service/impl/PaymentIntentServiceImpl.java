@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TerminalIntentServiceImpl implements PaymentIntentService {
+public class PaymentIntentServiceImpl implements PaymentIntentService {
     @Value("${STRIPE_API_KEY}")
     private String STRIPE_API_KEY;
 
@@ -28,16 +28,10 @@ public class TerminalIntentServiceImpl implements PaymentIntentService {
                         .build();
 
         try {
-            PaymentIntent paymentIntent = PaymentIntent.create(params);
-            return paymentIntent;
+            return PaymentIntent.create(params);
         } catch (StripeException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public void createPaymentIntentForProcessPayments(PaymentProcessRequest paymentProcessRequest) {
-
     }
 }

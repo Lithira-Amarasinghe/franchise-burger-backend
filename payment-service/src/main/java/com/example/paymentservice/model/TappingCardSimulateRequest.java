@@ -1,12 +1,14 @@
 package com.example.paymentservice.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class Response <T>{
-private HttpStatus httpStatus;
-private T response;
+@Getter
+@Setter
+public class TappingCardSimulateRequest {
+    private String terminalId;
 }

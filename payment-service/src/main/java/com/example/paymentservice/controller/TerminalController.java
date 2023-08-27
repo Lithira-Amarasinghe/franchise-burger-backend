@@ -1,11 +1,12 @@
 package com.example.paymentservice.controller;
 
 import com.example.paymentservice.model.ReaderRegistrationRequest;
-import com.example.paymentservice.model.Response;
 import com.example.paymentservice.service.TerminalService;
 import com.stripe.model.terminal.Reader;
+import com.stripe.model.terminal.ReaderCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,27 +17,21 @@ public class TerminalController {
     private TerminalService terminalService;
 
     @PostMapping("/register")
-    public Response<Reader> registerTerminal(@RequestBody ReaderRegistrationRequest readerRegistrationRequest) {
-        return new Response<>(
-                HttpStatus.OK,
-                terminalService.registerTerminal(readerRegistrationRequest)
-        );
+    public ResponseEntity registerTerminal(@RequestBody ReaderRegistrationRequest readerRegistrationRequest) {
+        Reader reader = terminalService.registerTerminal(readerRegistrationRequest);
+        return ResponseEntity.status(200).body(reader.toJson());
     }
 
     @GetMapping()
-    public Response<Reader> getTerminalDetails(@RequestParam String terminalId) {
-        return new Response<>(
-                HttpStatus.OK,
-                terminalService.getReader(terminalId)
-        );
+    public ResponseEntity getTerminalDetails(@RequestParam String terminalId) {
+        Reader reader = terminalService.getReader(terminalId);
+        return ResponseEntity.status(200).body(reader.toJson());
     }
 
     @GetMapping("/{locationId}")
-    public Response getAllReadersAt(@PathVariable String locationId) {
-        return
-                new Response(
-                        HttpStatus.OK,
-                        this.terminalService.getAllReadersAt(locationId)
-                );
+    public ResponseEntity getAllReadersAt(@PathVariable String locationId) {
+
+        ReaderCollection allReadersAt = this.terminalService.getAllReadersAt(locationId);
+        return ResponseEntity.ok(allReadersAt.toJson());
     }
 }
